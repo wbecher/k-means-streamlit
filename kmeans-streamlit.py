@@ -115,62 +115,8 @@ if st.checkbox('Ver algoritmo'):
     """
 ```python
 def do_kmeans_clustering(k, X, random_state):
-
-global debug
-
-np.random.seed(random_state)
-
-# centroids = np.random.rand(k, 2)
-centroids = np.random.randint(-10, 10, (k,2))
-centers = centroids
-
-labels = np.zeros((len(X)))
-distancias = np.zeros((len(X),k))
-
-passo = 1
-
-while True:
-    if debug:
-        print(f'\n-- Passo {passo}')
-
-    old_centers = centers
-
-    for i in range(k):  # de 0 a 2
-        for j in range(len(X)):  # de 0 a 300
-            # print(f'\n[Passo {passo}] Calculando distancia do ponto {X[j]} para centroid {centroids[i]}')
-            # print(distancia(X[j], centroids[i]))
-            distancias[j,i] = distancia(X[j], centers[i])
-
-    labels = np.argmin(distancias, axis=1)  # Define as labels como o indice de menor valor no array de distâncias
-
-    centers = np.array([X[labels == i].mean(0) for i in range(k)])  # Calcula a média dos pontos de cada cluster
-    # centers = np.nan_to_num(centers)  # Se um cluster estiver zerado, transforma np.NaN em 0
-
-    if debug:
-        sns.scatterplot(x='x', y='y', data=df, hue=labels, palette='rainbow', legend=False)
-        plt.scatter(old_centers[:,0], old_centers[:,1], color='black', s=100)
-        plt.title(f'DEBUG = Passo {passo}')
-        st.pyplot()
-
-    if np.array_equal(centers, old_centers):
-        if debug:
-            print('Centers', centers)
-            print('Old Centers', old_centers)
-        break
-
-    if debug:
-        # print(distancias)
-        print(labels)
-        print(centers)
-        print('-'*10)
-    passo = passo + 1
-
-    # Break adicionado para fins de teste
-    if passo > 100:
-        break
-
-centroids = np.array(centroids)
-return centers, labels
+    # Código Pronto Vai Aqui
+    return centers, labels
 ```
     """
 
