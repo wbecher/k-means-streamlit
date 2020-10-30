@@ -8,9 +8,9 @@ from sklearn.datasets import make_blobs
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 ###
-debug = st.sidebar.checkbox('Show Debug')
+debug = st.sidebar.checkbox('Show Debug', value=False)
 
-ntn = st.sidebar.checkbox('Mover Centroids com média NaN para (0,0)')
+ntn = st.sidebar.checkbox('Mover Centroids com média NaN para (0,0)', value=True)
 
 
 def distancia(p1, p2):
@@ -105,6 +105,16 @@ def plot(X, centroids, labels, random_state):
 
 st.markdown('# Implementação Manual K-Means')
 
+"""
+Ferramenta criada na aula de `Aprendizado Não Supervisionado - Agrupamento de Dados`.
+
+#### Prof. Thomas da Silva
+
+#### Alunos:
+- Lucas Knaak
+- William Becher
+"""
+
 plt.rcParams['figure.figsize'] = (14, 8)
 sns.set(context='talk')
 centers = 3
@@ -112,14 +122,14 @@ n_features = 2
 
 n_samples = st.sidebar.number_input('n_samples', min_value=10, max_value=1000, value=300, step=50)
 
-if st.checkbox('Ver algoritmo'):
-    """
-```python
-def do_kmeans_clustering(k, X, random_state):
-    # Código Pronto Vai Aqui
-    return centers, labels
-```
-    """
+# if st.checkbox('Ver algoritmo'):
+#     """
+# ```python
+# def do_kmeans_clustering(k, X, random_state):
+#     # Código Pronto Vai Aqui
+#     return centers, labels
+# ```
+#     """
 
 random_state = 100
 X, y = make_blobs(n_samples=n_samples, centers=centers, n_features=n_features, random_state=random_state)
@@ -133,6 +143,7 @@ k = st.sidebar.number_input('k', min_value=1, max_value=100, value=3)
 random_state = st.sidebar.number_input('Random State', min_value=1, max_value=10000, value=30)
 
 f"""
+Parâmetros utilizados:
 - k = {k}
 - random_state = {random_state}
 """
