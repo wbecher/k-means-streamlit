@@ -49,7 +49,7 @@ def do_kmeans_clustering(k, X, random_state):
         labels = np.argmin(distancias, axis=1)  # Define as labels como o indice de menor valor no array de distâncias
 
         centers = np.array([X[labels == i].mean(0) for i in range(k)])  # Calcula a média dos pontos de cada cluster
-        centers = np.nan_to_num(centers)  # Se um cluster estiver zerado, transforma np.NaN em 0
+        # centers = np.nan_to_num(centers)  # Se um cluster estiver zerado, transforma np.NaN em 0
 
         if debug:
             sns.scatterplot(x='x', y='y', data=df, hue=labels, palette='rainbow', legend=False)
@@ -130,7 +130,7 @@ while True:
     labels = np.argmin(distancias, axis=1)  # Define as labels como o indice de menor valor no array de distâncias
 
     centers = np.array([X[labels == i].mean(0) for i in range(k)])  # Calcula a média dos pontos de cada cluster
-    centers = np.nan_to_num(centers)  # Se um cluster estiver zerado, transforma np.NaN em 0
+    # centers = np.nan_to_num(centers)  # Se um cluster estiver zerado, transforma np.NaN em 0
 
     if debug:
         sns.scatterplot(x='x', y='y', data=df, hue=labels, palette='rainbow', legend=False)
@@ -168,7 +168,7 @@ df = pd.DataFrame(X, columns=['x', 'y'])
 # plt.title('Dados Iniciais Aleatórios')
 # st.pyplot()
 
-k = st.sidebar.number_input('k', min_value=1, max_value=100)
+k = st.sidebar.number_input('k', min_value=1, max_value=100, value=3)
 random_state = st.sidebar.number_input('Random State', min_value=1, max_value=10000)
 
 f"""
