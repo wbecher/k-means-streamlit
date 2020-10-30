@@ -58,6 +58,7 @@ def do_kmeans_clustering(k, X, random_state):
             centers = np.nan_to_num(centers)  # Se um cluster estiver zerado, transforma np.NaN em 0
 
         if debug:
+            st.markdown(f'DEBUG | Passo {passo}')
             sns.scatterplot(x='x', y='y', data=df, hue=labels, palette='rainbow', legend=False)
             plt.scatter(old_centers[:, 0], old_centers[:, 1], color='black', s=100)
             plt.title(f'DEBUG = Passo {passo}')
