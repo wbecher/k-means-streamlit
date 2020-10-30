@@ -4,12 +4,13 @@ import pandas as pd
 import seaborn as sns
 import streamlit as st
 from sklearn.datasets import make_blobs
-from sklearn.metrics import pairwise_distances_argmin
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 ###
 debug = st.sidebar.checkbox('Show Debug')
+
+ntn = st.sidebar.checkbox('Mover Centroids com média NaN para (0,0)')
 
 
 def distancia(p1, p2):
@@ -26,11 +27,14 @@ def do_kmeans_clustering(k, X, random_state):
     np.random.seed(random_state)
 
     # centroids = np.random.rand(k, 2)
-    centroids = np.random.randint(-10, 10, (k,2))
+    centroids = np.random.randint(-10, 10, (k, 2))
     centers = centroids
 
+    st.markdown('Centroids Iniciais:')
+    st.write(centers)
+
     labels = np.zeros((len(X)))
-    distancias = np.zeros((len(X),k))
+    distancias = np.zeros((len(X), k))
 
     passo = 1
 
@@ -44,18 +48,27 @@ def do_kmeans_clustering(k, X, random_state):
             for j in range(len(X)):  # de 0 a 300
                 # print(f'\n[Passo {passo}] Calculando distancia do ponto {X[j]} para centroid {centroids[i]}')
                 # print(distancia(X[j], centroids[i]))
-                distancias[j,i] = distancia(X[j], centers[i])
+                distancias[j, i] = distancia(X[j], centers[i])
 
         labels = np.argmin(distancias, axis=1)  # Define as labels como o indice de menor valor no array de distâncias
 
         centers = np.array([X[labels == i].mean(0) for i in range(k)])  # Calcula a média dos pontos de cada cluster
-        # centers = np.nan_to_num(centers)  # Se um cluster estiver zerado, transforma np.NaN em 0
+
+        if ntn:
+            centers = np.nan_to_num(centers)  # Se um cluster estiver zerado, transforma np.NaN em 0
 
         if debug:
             sns.scatterplot(x='x', y='y', data=df, hue=labels, palette='rainbow', legend=False)
-            plt.scatter(old_centers[:,0], old_centers[:,1], color='black', s=100)
+            plt.scatter(old_centers[:, 0], old_centers[:, 1], color='black', s=100)
             plt.title(f'DEBUG = Passo {passo}')
             st.pyplot()
+            st.markdown('Distâncias: ')
+            st.write(distancias)
+            st.markdown('Centroids Anteriores: ')
+            st.write(old_centers)
+            st.markdown('Novos Centroids: ')
+            st.write(centers)
+            st.markdown('---')
 
         if np.array_equal(centers, old_centers):
             if debug:
@@ -67,11 +80,12 @@ def do_kmeans_clustering(k, X, random_state):
             # print(distancias)
             print(labels)
             print(centers)
-            print('-'*10)
+            print('-' * 10)
         passo = passo + 1
 
         # Break adicionado para fins de teste
-        if passo > 100:
+        if passo > 30:
+            st.markdown('Foi adicionado um limite de 30 passos para evitar loops infinitos.')
             break
 
     centroids = np.array(centroids)
@@ -169,7 +183,7 @@ df = pd.DataFrame(X, columns=['x', 'y'])
 # st.pyplot()
 
 k = st.sidebar.number_input('k', min_value=1, max_value=100, value=3)
-random_state = st.sidebar.number_input('Random State', min_value=1, max_value=10000)
+random_state = st.sidebar.number_input('Random State', min_value=1, max_value=10000, value=30)
 
 f"""
 - k = {k}
